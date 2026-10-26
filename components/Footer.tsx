@@ -1,0 +1,106 @@
+"use client";
+
+import { useState } from "react";
+import { X } from "lucide-react";
+
+export default function Footer() {
+  const [modalContent, setModalContent] = useState<{
+    title: string;
+    body: string;
+  } | null>(null);
+
+  const openModal = (type: "privacy" | "terms" | "contact") => {
+    if (type === "privacy") {
+      setModalContent({
+        title: "PRIVACY PROTOCOL",
+        body: "VYBE CLUB operates under zero-surveillance design principles. Your waitlist email is exclusively used to deliver access codes and will never be sold, rented, or distributed to advertising networks.",
+      });
+    } else if (type === "terms") {
+      setModalContent({
+        title: "CLUB ACCESS TERMS",
+        body: "VYBE CLUB founding cohort access is allocated strictly on invitation and waitlist chronological hierarchy. Membership tokens are non-transferable pre-launch. VYBE CLUB is not a licensed depository institution or chartered bank.",
+      });
+    } else {
+      setModalContent({
+        title: "COMMUNICATION CHANNELS",
+        body: "For underground drops, partnerships, and press inquiries: vybe@vybeclub.com. Direct responses are issued exclusively to verified inquiries.",
+      });
+    }
+  };
+
+  return (
+    <footer className="relative py-16 px-5 sm:px-8 border-t border-white/[0.08] bg-[#050505]">
+      <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start md:items-center justify-between gap-8">
+        
+        {/* Brand & Slogan */}
+        <div>
+          <div className="flex items-center gap-2 mb-2">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#CCFF00]" />
+            <span className="font-black tracking-[-0.03em] text-2xl text-white font-[family-name:var(--font-syne)] uppercase">
+              VYBE<span className="text-[#CCFF00]">CLUB</span>
+            </span>
+          </div>
+          <p className="text-sm text-white/50 font-mono tracking-wide">
+            “Money. People. Life.”
+          </p>
+        </div>
+
+        {/* Links */}
+        <div className="flex flex-wrap items-center gap-6 sm:gap-8 text-xs font-mono uppercase tracking-wider text-white/60">
+          <button
+            onClick={() => openModal("privacy")}
+            className="hover:text-[#CCFF00] transition-colors cursor-pointer"
+          >
+            Privacy
+          </button>
+          <button
+            onClick={() => openModal("terms")}
+            className="hover:text-[#CCFF00] transition-colors cursor-pointer"
+          >
+            Terms
+          </button>
+          <button
+            onClick={() => openModal("contact")}
+            className="hover:text-[#CCFF00] transition-colors cursor-pointer"
+          >
+            Contact
+          </button>
+        </div>
+
+        {/* Copyright & Disclaimer */}
+        <div className="text-left md:text-right text-[11px] font-mono text-white/40 space-y-1">
+          <p>© 2027 VYBE CLUB INC. ALL RIGHTS RESERVED.</p>
+          <p className="text-white/25">NOT A BANK. A CULTURAL SHIFT.</p>
+        </div>
+      </div>
+
+      {/* Info Modal */}
+      {modalContent && (
+        <div className="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4">
+          <div className="w-full max-w-md p-6 rounded-2xl bg-[#111111] border border-white/15 text-white animate-in fade-in zoom-in-95 duration-200">
+            <div className="flex items-center justify-between pb-4 border-b border-white/10 mb-4">
+              <h4 className="font-mono text-sm tracking-wider font-bold text-[#CCFF00]">
+                {modalContent.title}
+              </h4>
+              <button
+                onClick={() => setModalContent(null)}
+                className="p-1 text-white/60 hover:text-white"
+              >
+                <X className="w-4 h-4" />
+              </button>
+            </div>
+            <p className="text-sm text-white/70 leading-relaxed font-sans">
+              {modalContent.body}
+            </p>
+            <button
+              onClick={() => setModalContent(null)}
+              className="mt-6 w-full py-2.5 rounded-xl bg-white/10 hover:bg-[#CCFF00] hover:text-black text-xs font-mono font-bold uppercase tracking-wider transition-colors"
+            >
+              CLOSE
+            </button>
+          </div>
+        </div>
+      )}
+    </footer>
+  );
+}
