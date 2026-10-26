@@ -28,7 +28,7 @@ export default function AmbientBackdrop() {
       {/* Subtle cursor spotlight on pointer devices */}
       {hasMouse && (
         <div
-          className="absolute w-[500px] h-[500px] rounded-full bg-[#CCFF00]/[0.025] blur-[100px] -translate-x-1/2 -translate-y-1/2 transition-transform duration-75 ease-out pointer-events-none"
+          className="absolute w-[500px] h-[500px] rounded-full bg-[#FCCA59]/[0.025] blur-[100px] -translate-x-1/2 -translate-y-1/2 transition-transform duration-75 ease-out pointer-events-none"
           style={{
             left: `${mousePos.x}px`,
             top: `${mousePos.y}px`,
@@ -37,9 +37,9 @@ export default function AmbientBackdrop() {
       )}
 
       {/* Fixed ambient glow spots */}
-      <div className="absolute -top-40 left-1/4 w-[600px] h-[600px] bg-[#CCFF00]/[0.035] rounded-full blur-[160px] pointer-events-none" />
+      <div className="absolute -top-40 left-1/4 w-[600px] h-[600px] bg-[#FCCA59]/[0.035] rounded-full blur-[160px] pointer-events-none" />
       <div className="absolute top-1/2 -right-40 w-[500px] h-[500px] bg-white/[0.02] rounded-full blur-[140px] pointer-events-none" />
-      <div className="absolute bottom-10 -left-20 w-[600px] h-[600px] bg-[#CCFF00]/[0.03] rounded-full blur-[160px] pointer-events-none" />
+      <div className="absolute bottom-10 -left-20 w-[600px] h-[600px] bg-[#FCCA59]/[0.03] rounded-full blur-[160px] pointer-events-none" />
     </div>
   );
 }

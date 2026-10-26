@@ -63,7 +63,7 @@ export default function HeroVisual() {
       step += 0.008;
       ctx.clearRect(0, 0, width, height);
 
-      // Draw subtle abstract flowing energy lines
+      // Draw subtle abstract flowing energy lines in #FCCA59
       for (let i = 0; i < 3; i++) {
         ctx.beginPath();
         const yOffset = height * (0.42 + i * 0.08);
@@ -78,10 +78,10 @@ export default function HeroVisual() {
 
         ctx.strokeStyle =
           i === 0
-            ? "rgba(204, 255, 0, 0.07)"
+            ? "rgba(252, 202, 89, 0.12)"
             : i === 1
             ? "rgba(255, 255, 255, 0.03)"
-            : "rgba(204, 255, 0, 0.04)";
+            : "rgba(254, 215, 122, 0.08)";
         ctx.lineWidth = i === 0 ? 2 : 1.5;
         ctx.stroke();
       }
@@ -98,7 +98,7 @@ export default function HeroVisual() {
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(204, 255, 0, ${p.opacity * 0.45})`;
+        ctx.fillStyle = `rgba(252, 202, 89, ${p.opacity * 0.6})`;
         ctx.fill();
       });
 
@@ -125,9 +125,9 @@ export default function HeroVisual() {
         className="absolute inset-0 w-full h-full pointer-events-none z-0"
       />
 
-      {/* Layered Abstract Glowing Orbs */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] sm:w-[500px] h-[340px] sm:h-[500px] rounded-full bg-[#CCFF00]/[0.08] blur-[100px] pointer-events-none animate-pulse duration-[8000ms]" />
-      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] sm:w-[320px] h-[220px] sm:h-[320px] rounded-full bg-white/[0.04] blur-[80px] pointer-events-none" />
+      {/* Layered Abstract Glowing Orbs in #FCCA59 */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[340px] sm:w-[500px] h-[340px] sm:h-[500px] rounded-full bg-[#FCCA59]/[0.10] blur-[110px] pointer-events-none animate-pulse duration-[8000ms]" />
+      <div className="absolute top-1/3 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[220px] sm:w-[320px] h-[220px] sm:h-[320px] rounded-full bg-[#FED77A]/[0.06] blur-[80px] pointer-events-none" />
 
       {/* Interactive 3D Holographic Club Access Token */}
       <motion.div
@@ -136,23 +136,23 @@ export default function HeroVisual() {
           rotateY,
           transformStyle: "preserve-3d",
         }}
-        className="relative z-10 w-[290px] sm:w-[360px] md:w-[400px] aspect-[1.58/1] rounded-[24px] p-6 sm:p-7 bg-gradient-to-br from-[#181818]/90 via-[#0e0e0e]/95 to-[#050505] border border-white/15 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8),0_0_30px_rgba(204,255,0,0.12)] backdrop-blur-2xl transition-shadow duration-300 group cursor-default"
+        className="relative z-10 w-[290px] sm:w-[360px] md:w-[400px] aspect-[1.58/1] rounded-[24px] p-6 sm:p-7 bg-gradient-to-br from-[#1b1812]/90 via-[#100e0a]/95 to-[#050505] border border-white/15 shadow-[0_25px_60px_-15px_rgba(0,0,0,0.8),0_0_35px_rgba(252,202,89,0.22)] backdrop-blur-2xl transition-shadow duration-300 group cursor-default"
       >
         {/* Subtle glass reflection gradient */}
-        <div className="absolute inset-0 rounded-[24px] bg-gradient-to-tr from-transparent via-white/[0.04] to-[#CCFF00]/[0.08] pointer-events-none" />
+        <div className="absolute inset-0 rounded-[24px] bg-gradient-to-tr from-transparent via-white/[0.04] to-[#FCCA59]/[0.10] pointer-events-none" />
 
-        {/* Ambient Lime Corner Glow */}
-        <div className="absolute -top-10 -right-10 w-28 h-28 bg-[#CCFF00]/20 rounded-full blur-2xl group-hover:bg-[#CCFF00]/35 transition-all duration-500 pointer-events-none" />
+        {/* Ambient Gold Corner Glow */}
+        <div className="absolute -top-10 -right-10 w-28 h-28 bg-[#FCCA59]/25 rounded-full blur-2xl group-hover:bg-[#FCCA59]/40 transition-all duration-500 pointer-events-none" />
 
         {/* Token Header */}
         <div className="relative z-10 flex items-center justify-between pb-4 border-b border-white/[0.08]">
           <div className="flex items-center gap-2">
-            <span className="w-2 h-2 rounded-full bg-[#CCFF00] shadow-[0_0_8px_#CCFF00]" />
+            <span className="w-2 h-2 rounded-full bg-[#FCCA59] shadow-[0_0_8px_#FCCA59]" />
             <span className="text-[11px] font-mono font-semibold tracking-wider text-white/90 uppercase">
               ALPHA TOKEN // TIER 01
             </span>
           </div>
-          <span className="text-[10px] font-mono tracking-widest text-[#CCFF00] px-2 py-0.5 rounded-full bg-[#CCFF00]/10 border border-[#CCFF00]/25">
+          <span className="text-[10px] font-mono tracking-widest text-[#FCCA59] px-2 py-0.5 rounded-full bg-[#FCCA59]/15 border border-[#FCCA59]/35">
             INVITE ONLY
           </span>
         </div>
@@ -164,7 +164,7 @@ export default function HeroVisual() {
               PROTOCOL
             </p>
             <h4 className="text-2xl sm:text-3xl font-extrabold tracking-tighter text-white font-[family-name:var(--font-syne)]">
-              VYBE<span className="text-[#CCFF00]">CLUB</span>
+              VYBE<span className="text-[#FCCA59]">CLUB</span>
             </h4>
           </div>
 
@@ -172,10 +172,10 @@ export default function HeroVisual() {
             {[40, 75, 100, 60, 90, 45, 80].map((h, i) => (
               <span
                 key={i}
-                className="w-1 bg-[#CCFF00] rounded-full transition-all duration-300 group-hover:scale-y-110"
+                className="w-1 bg-[#FCCA59] rounded-full transition-all duration-300 group-hover:scale-y-110"
                 style={{
                   height: `${h}%`,
-                  opacity: 0.35 + (i % 3) * 0.3,
+                  opacity: 0.45 + (i % 3) * 0.25,
                 }}
               />
             ))}
@@ -193,7 +193,7 @@ export default function HeroVisual() {
             </span>
           </div>
 
-          <div className="flex items-center gap-1.5 text-[#CCFF00]">
+          <div className="flex items-center gap-1.5 text-[#FCCA59]">
             <Sparkles className="w-3 h-3 animate-spin duration-[6000ms]" />
             <span className="tracking-widest uppercase text-[9px] font-bold">
               LAUNCH 2027

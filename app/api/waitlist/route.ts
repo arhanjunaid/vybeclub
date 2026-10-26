@@ -30,7 +30,7 @@ export async function POST(request: Request) {
 
     const formattedPass = passNumber || `#0${Math.floor(10000 + Math.random() * 90000)}`;
 
-    // 1. VIP Member Welcome Email (Branded Dark-Mode Gen-Z HTML)
+    // 1. VIP Member Welcome Email (Branded Dark-Mode Gen-Z HTML with #FCCA59)
     const memberMailOptions = {
       from: `"VYBE CLUB" <${user}>`,
       to: email,
@@ -53,13 +53,13 @@ export async function POST(request: Request) {
                   <!-- Brand Header -->
                   <tr>
                     <td align="left" style="padding-bottom: 25px; border-bottom: 1px solid #1a1a1a;">
-                      <span style="display: inline-block; width: 8px; height: 8px; background-color: #CCFF00; border-radius: 50%; margin-right: 8px;"></span>
+                      <span style="display: inline-block; width: 8px; height: 8px; background-color: #FCCA59; border-radius: 50%; margin-right: 8px;"></span>
                       <strong style="font-size: 18px; letter-spacing: 2px; color: #ffffff; text-transform: uppercase;">
-                        VYBE<span style="color: #CCFF00;">CLUB</span>
+                        VYBE<span style="color: #FCCA59;">CLUB</span>
                       </strong>
                     </td>
                     <td align="right" style="padding-bottom: 25px; border-bottom: 1px solid #1a1a1a;">
-                      <span style="font-size: 10px; font-family: monospace; letter-spacing: 1px; color: #CCFF00; background: rgba(204,255,0,0.1); border: 1px solid rgba(204,255,0,0.25); padding: 4px 8px; border-radius: 12px;">
+                      <span style="font-size: 10px; font-family: monospace; letter-spacing: 1px; color: #FCCA59; background: rgba(252,202,89,0.1); border: 1px solid rgba(252,202,89,0.25); padding: 4px 8px; border-radius: 12px;">
                         VIP ACCESS
                       </span>
                     </td>
@@ -83,7 +83,7 @@ export async function POST(request: Request) {
                   <!-- Digital Token Card -->
                   <tr>
                     <td colspan="2" style="padding: 25px 0;">
-                      <table width="100%" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, #181818 0%, #0d0d0d 100%); border: 1px solid #333333; border-radius: 14px; padding: 20px;">
+                      <table width="100%" cellpadding="0" cellspacing="0" style="background: linear-gradient(135deg, #181611 0%, #0d0c08 100%); border: 1px solid #332d1f; border-radius: 14px; padding: 20px;">
                         <tr>
                           <td style="font-family: monospace; font-size: 10px; color: #888888; text-transform: uppercase; letter-spacing: 1px;">
                             IDENTIFIER
@@ -93,7 +93,7 @@ export async function POST(request: Request) {
                           </td>
                         </tr>
                         <tr>
-                          <td style="font-family: monospace; font-size: 22px; font-weight: bold; color: #CCFF00; padding-top: 4px;">
+                          <td style="font-family: monospace; font-size: 22px; font-weight: bold; color: #FCCA59; padding-top: 4px;">
                             ${formattedPass}
                           </td>
                           <td align="right" style="font-family: monospace; font-size: 11px; font-weight: bold; color: #ffffff; padding-top: 4px;">

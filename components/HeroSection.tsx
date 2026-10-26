@@ -20,9 +20,9 @@ export default function HeroSection() {
           initial={{ opacity: 0, y: -15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 text-xs font-mono tracking-widest text-[#CCFF00] uppercase mb-8 backdrop-blur-xl shadow-[0_0_20px_rgba(204,255,0,0.15)]"
+          className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 text-xs font-mono tracking-widest text-[#FCCA59] uppercase mb-8 backdrop-blur-xl shadow-[0_0_20px_rgba(252,202,89,0.2)]"
         >
-          <Radio className="w-3.5 h-3.5 animate-pulse text-[#CCFF00]" />
+          <Radio className="w-3.5 h-3.5 animate-pulse text-[#FCCA59]" />
           <span>THE NEXT MONEY CLUB • COMING SOON // 2027</span>
         </motion.div>
 
@@ -35,7 +35,7 @@ export default function HeroSection() {
         >
           <h1 className="text-5xl sm:text-7xl md:text-8xl lg:text-9xl font-black uppercase tracking-[-0.05em] text-white font-[family-name:var(--font-syne)] leading-[0.92] select-none">
             YOUR MONEY. <br />
-            <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-[#f0f0f0] to-[#CCFF00] drop-shadow-[0_0_40px_rgba(204,255,0,0.3)]">
+            <span className="text-transparent bg-clip-text bg-gradient-to-b from-white via-[#fff8ec] to-[#FCCA59] drop-shadow-[0_0_40px_rgba(252,202,89,0.4)]">
               YOUR VYBE.
             </span>
           </h1>
@@ -48,7 +48,7 @@ export default function HeroSection() {
           transition={{ duration: 0.7, delay: 0.25 }}
           className="mt-8 max-w-2xl space-y-3"
         >
-          <p className="text-lg sm:text-xl font-medium text-[#CCFF00] tracking-wide uppercase font-mono">
+          <p className="text-lg sm:text-xl font-medium text-[#FCCA59] tracking-wide uppercase font-mono">
             “Something different is coming.”
           </p>
           <p className="text-base sm:text-lg text-white/70 font-light leading-relaxed">
@@ -75,14 +75,14 @@ export default function HeroSection() {
         >
           <button
             onClick={() => scrollTo("waitlist")}
-            className="text-white/60 hover:text-white underline underline-offset-4 decoration-[#CCFF00]/50 hover:decoration-[#CCFF00] transition-colors cursor-pointer"
+            className="text-white/60 hover:text-white underline underline-offset-4 decoration-[#FCCA59]/50 hover:decoration-[#FCCA59] transition-colors cursor-pointer"
           >
             [ JOIN THE WAITLIST ]
           </button>
           <span className="text-white/20">•</span>
           <button
             onClick={() => scrollTo("the-vybe")}
-            className="text-white/60 hover:text-[#CCFF00] transition-colors cursor-pointer"
+            className="text-white/60 hover:text-[#FCCA59] transition-colors cursor-pointer"
           >
             FOLLOW THE VYBE ↓
           </button>
@@ -103,7 +103,7 @@ export default function HeroSection() {
       {/* Scroll indicator */}
       <div className="relative z-10 flex flex-col items-center justify-center pt-8 text-white/30 text-[11px] font-mono tracking-widest uppercase">
         <span className="mb-2">EXPLORE PROTOCOL</span>
-        <ArrowDown className="w-3.5 h-3.5 animate-bounce text-[#CCFF00]" />
+        <ArrowDown className="w-3.5 h-3.5 animate-bounce text-[#FCCA59]" />
       </div>
     </section>
   );

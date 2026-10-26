@@ -23,7 +23,7 @@ export default function MarqueeBanner() {
           <div key={idx} className="flex items-center gap-8">
             <span
               className={`text-xs sm:text-sm tracking-[0.2em] font-extrabold uppercase font-[family-name:var(--font-syne)] ${
-                idx % 2 === 0 ? "text-white" : "text-[#CCFF00]"
+                idx % 2 === 0 ? "text-white" : "text-[#FCCA59]"
               }`}
             >
               {text}

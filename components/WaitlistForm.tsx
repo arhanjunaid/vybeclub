@@ -69,13 +69,13 @@ export default function WaitlistForm({
       localStorage.setItem("vybe_club_pass", finalPass);
       localStorage.setItem("vybe_club_email", email);
 
-      // Fire celebratory electric lime confetti
+      // Fire celebratory #FCCA59 gold confetti
       try {
         confetti({
           particleCount: 85,
           spread: 75,
           origin: { y: 0.65 },
-          colors: ["#CCFF00", "#FFFFFF", "#8AA800", "#DFFF00"],
+          colors: ["#FCCA59", "#FED77A", "#FFFFFF", "#FFA500"],
         });
       } catch {
         // fallback
@@ -92,11 +92,11 @@ export default function WaitlistForm({
 
   if (submitted) {
     return (
-      <div className="w-full max-w-md mx-auto p-6 rounded-2xl bg-gradient-to-b from-[#141414] to-[#0a0a0a] border border-[#CCFF00]/30 shadow-[0_0_30px_rgba(204,255,0,0.15)] animate-in fade-in zoom-in-95 duration-300">
+      <div className="w-full max-w-md mx-auto p-6 rounded-2xl bg-gradient-to-b from-[#141414] to-[#0a0a0a] border border-[#FCCA59]/35 shadow-[0_0_30px_rgba(252,202,89,0.18)] animate-in fade-in zoom-in-95 duration-300">
         <div className="flex items-center justify-between mb-4 pb-3 border-b border-white/10">
           <div className="flex items-center gap-2">
-            <span className="w-2.5 h-2.5 rounded-full bg-[#CCFF00] shadow-[0_0_10px_#CCFF00] animate-pulse" />
-            <span className="font-mono text-xs uppercase tracking-widest text-[#CCFF00] font-bold">
+            <span className="w-2.5 h-2.5 rounded-full bg-[#FCCA59] shadow-[0_0_10px_#FCCA59] animate-pulse" />
+            <span className="font-mono text-xs uppercase tracking-widest text-[#FCCA59] font-bold">
               ACCESS PASS RESERVED
             </span>
           </div>
@@ -112,7 +112,7 @@ export default function WaitlistForm({
           <p className="text-sm text-white/70 font-sans mt-2">
             We’ve locked your founding spot for <span className="text-white font-medium">{email}</span>.
           </p>
-          <div className="mt-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#CCFF00]/10 border border-[#CCFF00]/25 text-[11px] font-mono text-[#CCFF00]">
+          <div className="mt-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FCCA59]/10 border border-[#FCCA59]/25 text-[11px] font-mono text-[#FCCA59]">
             <MailCheck className="w-3.5 h-3.5" />
             <span>VIP pass dispatched from info@vybeclub.co.in</span>
           </div>
@@ -122,7 +122,7 @@ export default function WaitlistForm({
           <button
             onClick={copyInvite}
             type="button"
-            className="w-full py-3 px-4 rounded-xl bg-white/10 hover:bg-[#CCFF00] hover:text-black text-white text-xs font-mono font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-200 active:scale-98 cursor-pointer"
+            className="w-full py-3 px-4 rounded-xl bg-white/10 hover:bg-[#FCCA59] hover:text-black text-white text-xs font-mono font-semibold uppercase tracking-wider flex items-center justify-center gap-2 transition-all duration-200 active:scale-98 cursor-pointer"
           >
             {copied ? (
               <>
@@ -143,7 +143,7 @@ export default function WaitlistForm({
 
   return (
     <form onSubmit={handleSubmit} className="w-full max-w-md mx-auto">
-      <div className="relative flex flex-col sm:flex-row items-stretch gap-2.5 p-1.5 sm:p-2 rounded-2xl sm:rounded-full bg-white/[0.05] border border-white/15 backdrop-blur-xl focus-within:border-[#CCFF00]/80 focus-within:shadow-[0_0_25px_rgba(204,255,0,0.2)] transition-all duration-300">
+      <div className="relative flex flex-col sm:flex-row items-stretch gap-2.5 p-1.5 sm:p-2 rounded-2xl sm:rounded-full bg-white/[0.05] border border-white/15 backdrop-blur-xl focus-within:border-[#FCCA59]/80 focus-within:shadow-[0_0_25px_rgba(252,202,89,0.25)] transition-all duration-300">
         <input
           type="email"
           value={email}
@@ -160,17 +160,17 @@ export default function WaitlistForm({
         <button
           type="submit"
           disabled={loading}
-          className="group relative inline-flex items-center justify-center gap-2 px-7 py-3.5 sm:py-3 rounded-xl sm:rounded-full bg-[#CCFF00] text-black font-extrabold text-xs sm:text-sm tracking-wider uppercase shadow-[0_0_20px_rgba(204,255,0,0.35)] hover:shadow-[0_0_30px_rgba(204,255,0,0.6)] hover:bg-[#d6ff33] active:scale-95 transition-all duration-200 cursor-pointer whitespace-nowrap disabled:opacity-80"
+          className="group relative inline-flex items-center justify-center gap-2 px-7 py-3.5 sm:py-3 rounded-xl sm:rounded-full bg-[#FCCA59] text-black font-extrabold text-xs sm:text-sm tracking-wider uppercase shadow-[0_0_20px_rgba(252,202,89,0.35)] hover:shadow-[0_0_30px_rgba(252,202,89,0.6)] hover:bg-[#FED77A] active:scale-95 transition-all duration-200 cursor-pointer whitespace-nowrap disabled:opacity-80"
         >
           {loading ? (
             <>
-              <Loader2 className="w-4 h-4 animate-spin" />
+              <Loader2 className="w-4 h-4 animate-spin text-black" />
               <span>LOCKING IN...</span>
             </>
           ) : (
             <>
               <span>{ctaText}</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform text-black" />
             </>
           )}
         </button>
@@ -184,7 +184,7 @@ export default function WaitlistForm({
 
       {/* Exclusivity micro-copy */}
       <div className="mt-3.5 flex items-center justify-center gap-2 text-[11px] font-mono text-white/40">
-        <Sparkles className="w-3 h-3 text-[#CCFF00]" />
+        <Sparkles className="w-3 h-3 text-[#FCCA59]" />
         <span>LIMITED FOUNDING COHORT • STRICTLY CONFIDENTIAL</span>
       </div>
     </form>

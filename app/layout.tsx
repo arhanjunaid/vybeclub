@@ -41,7 +41,7 @@ export default function RootLayout({
       lang="en"
       className={`${spaceGrotesk.variable} ${syne.variable} dark scroll-smooth bg-[#070707] text-[#FFFFFF]`}
     >
-      <body className="min-h-screen bg-[#070707] text-white selection:bg-[#CCFF00] selection:text-black antialiased overflow-x-hidden font-sans">
+      <body className="min-h-screen bg-[#070707] text-white selection:bg-[#FCCA59] selection:text-black antialiased overflow-x-hidden font-sans">
         {children}
       </body>
     </html>

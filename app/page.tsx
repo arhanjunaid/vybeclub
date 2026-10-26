@@ -10,7 +10,7 @@ import AmbientBackdrop from "@/components/AmbientBackdrop";
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen bg-[#070707] text-white selection:bg-[#CCFF00] selection:text-black">
+    <main className="relative min-h-screen bg-[#070707] text-white selection:bg-[#FCCA59] selection:text-black">
       {/* Ambient background particles & cursor spotlight */}
       <AmbientBackdrop />
 

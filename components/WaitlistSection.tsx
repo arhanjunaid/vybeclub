@@ -17,15 +17,15 @@ export default function WaitlistSection() {
 
   return (
     <section id="waitlist" className="relative py-28 sm:py-36 px-5 sm:px-8 border-t border-white/[0.08] overflow-hidden">
-      {/* Background ambient lighting */}
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[#CCFF00]/[0.06] blur-[150px] pointer-events-none rounded-full" />
+      {/* Background ambient lighting in #FCCA59 */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[400px] bg-[#FCCA59]/[0.06] blur-[150px] pointer-events-none rounded-full" />
 
       <div className="relative z-10 max-w-4xl mx-auto text-center">
         {/* Live members queued pill */}
         <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-full bg-white/[0.04] border border-white/10 text-xs font-mono text-white/80 mb-8 backdrop-blur-md">
-          <Users className="w-3.5 h-3.5 text-[#CCFF00]" />
+          <Users className="w-3.5 h-3.5 text-[#FCCA59]" />
           <span>
-            <strong className="text-[#CCFF00] font-bold">
+            <strong className="text-[#FCCA59] font-bold">
               {memberCount.toLocaleString()}
             </strong>{" "}
             PEOPLE ON THE PRIVATE LIST
@@ -35,7 +35,7 @@ export default function WaitlistSection() {
         {/* Big Headline */}
         <h2 className="text-4xl sm:text-6xl md:text-7xl font-black tracking-[-0.04em] uppercase text-white font-[family-name:var(--font-syne)] leading-[0.95]">
           GET IN BEFORE <br />
-          <span className="text-[#CCFF00] drop-shadow-[0_0_35px_rgba(204,255,0,0.3)]">
+          <span className="text-[#FCCA59] drop-shadow-[0_0_35px_rgba(252,202,89,0.35)]">
             EVERYONE ELSE.
           </span>
         </h2>
@@ -58,7 +58,7 @@ export default function WaitlistSection() {
           </div>
           <span className="text-white/20">•</span>
           <div className="flex items-center gap-1.5">
-            <ShieldCheck className="w-3.5 h-3.5 text-[#CCFF00]" />
+            <ShieldCheck className="w-3.5 h-3.5 text-[#FCCA59]" />
             <span>ENCRYPTED ACCESS</span>
           </div>
           <span className="text-white/20">•</span>
