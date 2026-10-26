@@ -1,0 +1,39 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" width="64" height="64">
+  <defs>
+    <!-- Background Gradient -->
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#141414" />
+      <stop offset="100%" stop-color="#050505" />
+    </linearGradient>
+
+    <!-- Accent Gold Gradient -->
+    <linearGradient id="goldGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#FFF0B3" />
+      <stop offset="40%" stop-color="#FCCA59" />
+      <stop offset="100%" stop-color="#E5A82E" />
+    </linearGradient>
+
+    <!-- Subtle Glow Filter -->
+    <filter id="goldGlow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="1.5" result="blur" />
+      <feComposite in="SourceGraphic" in2="blur" operator="over" />
+    </filter>
+  </defs>
+
+  <!-- Outer Rounded Square / Circle Badge -->
+  <rect x="2" y="2" width="60" height="60" rx="16" fill="url(#bgGrad)" stroke="#FCCA59" stroke-width="1.8" stroke-opacity="0.45" />
+
+  <!-- Inner Subtle Ring -->
+  <rect x="6" y="6" width="52" height="52" rx="12" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="1" />
+
+  <!-- Stylized Geometric "V" Monogram -->
+  <path
+    d="M 18 19 L 26 19 L 32 37 L 38 19 L 46 19 L 35 45 C 33.8 47.5 30.2 47.5 29 45 Z"
+    fill="url(#goldGrad)"
+    filter="url(#goldGlow)"
+  />
+
+  <!-- Top Right Glowing Live Beacon Dot -->
+  <circle cx="48" cy="16" r="3.5" fill="#FCCA59" filter="url(#goldGlow)" />
+  <circle cx="48" cy="16" r="1.5" fill="#FFFFFF" />
+</svg>

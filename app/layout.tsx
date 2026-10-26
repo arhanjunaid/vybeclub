@@ -19,6 +19,15 @@ export const metadata: Metadata = {
   description:
     "A next-generation financial and social experience for Gen-Z. Something different is coming. Get in before everyone else.",
   keywords: ["VYBE CLUB", "Gen-Z", "money", "social", "fintech", "exclusive club", "waitlist"],
+  icons: {
+    icon: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+    apple: [
+      { url: "/icon.svg", type: "image/svg+xml" },
+    ],
+  },
   openGraph: {
     title: "VYBE CLUB — Your Money. Your Vybe.",
     description: "Something different is coming. The next money club for Gen-Z.",
@@ -39,9 +48,13 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${spaceGrotesk.variable} ${syne.variable} dark scroll-smooth bg-[#070707] text-[#FFFFFF]`}
     >
-      <body className="min-h-screen bg-[#070707] text-white selection:bg-[#FCCA59] selection:text-black antialiased overflow-x-hidden font-sans">
+      <body
+        suppressHydrationWarning
+        className="min-h-screen bg-[#070707] text-white selection:bg-[#FCCA59] selection:text-black antialiased overflow-x-hidden font-sans"
+      >
         {children}
       </body>
     </html>
