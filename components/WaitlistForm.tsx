@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useId, useState, useEffect } from "react";
+import Link from "next/link";
 import confetti from "canvas-confetti";
 import { Check, Copy, Sparkles, ArrowRight, Loader2, MailCheck } from "lucide-react";
 
@@ -10,20 +11,30 @@ interface WaitlistFormProps {
   placeholder?: string;
 }
 
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+const PHONE_RE = /^\+?[0-9][0-9\s().-]{6,19}$/;
+
 export default function WaitlistForm({
   variant = "hero",
   ctaText = "GET IN",
   placeholder = "Enter your email",
 }: WaitlistFormProps) {
+  const uid = useId();
+  const consentId = `${uid}-consent`;
+  const errorId = `${uid}-error`;
+
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [consent, setConsent] = useState(false);
   const [loading, setLoading] = useState(false);
   const [submitted, setSubmitted] = useState(false);
+  const [duplicate, setDuplicate] = useState(false);
   const [passNumber, setPassNumber] = useState("");
   const [copied, setCopied] = useState(false);
   const [error, setError] = useState("");
 
   useEffect(() => {
-    // Check if user already joined previously
+    // Restore state if this visitor already joined on this device
     const savedPass = localStorage.getItem("vybe_club_pass");
     const savedEmail = localStorage.getItem("vybe_club_email");
     if (savedPass && savedEmail) {
@@ -35,56 +46,74 @@ export default function WaitlistForm({
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!email || !email.includes("@") || !email.includes(".")) {
+
+    const trimmedEmail = email.trim();
+    const trimmedPhone = phone.trim();
+
+    if (!EMAIL_RE.test(trimmedEmail)) {
       setError("Enter a valid email address");
+      return;
+    }
+    if (trimmedPhone && !PHONE_RE.test(trimmedPhone)) {
+      setError("Enter a valid phone number or leave it blank");
+      return;
+    }
+    if (!consent) {
+      setError("Please tick the consent box to join the waitlist");
       return;
     }
 
     setError("");
     setLoading(true);
 
-    const generatedPass = `#0${Math.floor(10000 + Math.random() * 90000)}`;
-    let finalPass = generatedPass;
-
     try {
       const response = await fetch("/api/waitlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, passNumber: generatedPass }),
+        body: JSON.stringify({
+          email: trimmedEmail,
+          phone: trimmedPhone || undefined,
+          consent,
+        }),
       });
 
-      if (response.ok) {
-        const data = await response.json();
-        if (data.passNumber) {
-          finalPass = data.passNumber;
+      const data = await response.json().catch(() => ({}));
+
+      if (!response.ok) {
+        setError(data?.error || "Something went wrong. Please try again.");
+        return;
+      }
+
+      const finalPass: string = data.passNumber;
+      setPassNumber(finalPass);
+      setDuplicate(Boolean(data.duplicate));
+      setEmail(trimmedEmail);
+      setSubmitted(true);
+      localStorage.setItem("vybe_club_pass", finalPass);
+      localStorage.setItem("vybe_club_email", trimmedEmail);
+
+      if (!data.duplicate) {
+        try {
+          confetti({
+            particleCount: 85,
+            spread: 75,
+            origin: { y: 0.65 },
+            colors: ["#FCCA59", "#FED77A", "#FFFFFF", "#FFA500"],
+          });
+        } catch {
+          // confetti is decorative only
         }
       }
     } catch (err) {
-      console.warn("Waitlist API dispatch warning:", err);
-      // Fallback seamlessly so visitor never encounters a broken experience
+      console.warn("Waitlist request failed:", err);
+      setError("Network error. Check your connection and try again.");
     } finally {
       setLoading(false);
-      setPassNumber(finalPass);
-      setSubmitted(true);
-      localStorage.setItem("vybe_club_pass", finalPass);
-      localStorage.setItem("vybe_club_email", email);
-
-      // Fire celebratory #FCCA59 gold confetti
-      try {
-        confetti({
-          particleCount: 85,
-          spread: 75,
-          origin: { y: 0.65 },
-          colors: ["#FCCA59", "#FED77A", "#FFFFFF", "#FFA500"],
-        });
-      } catch {
-        // fallback
-      }
     }
   };
 
   const copyInvite = () => {
-    const text = `I just unlocked early access to VYBE CLUB ${passNumber}. Get in before everyone else: https://vybeclub.co.in`;
+    const text = `I just joined the VYBE CLUB waitlist ${passNumber}. Get in before everyone else: https://vybeclub.co.in`;
     navigator.clipboard.writeText(text);
     setCopied(true);
     setTimeout(() => setCopied(false), 2500);
@@ -107,15 +136,20 @@ export default function WaitlistForm({
 
         <div className="text-center py-3">
           <h4 className="text-3xl sm:text-4xl font-black tracking-tight text-white font-[family-name:var(--font-syne)] mb-1">
-            YOU’RE IN. 👀
+            {duplicate ? "YOU’RE ALREADY IN. 👀" : "YOU’RE IN. 👀"}
           </h4>
           <p className="text-sm text-white/70 font-sans mt-2">
-            We’ve locked your founding spot for <span className="text-white font-medium">{email}</span>.
+            {duplicate
+              ? "This email is already on the waitlist. Here is your original pass for "
+              : "We’ve saved your spot for "}
+            <span className="text-white font-medium">{email}</span>.
           </p>
-          <div className="mt-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FCCA59]/10 border border-[#FCCA59]/25 text-[11px] font-mono text-[#FCCA59]">
-            <MailCheck className="w-3.5 h-3.5" />
-            <span>VIP pass dispatched from info@vybeclub.co.in</span>
-          </div>
+          {!duplicate && (
+            <div className="mt-3 inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#FCCA59]/10 border border-[#FCCA59]/25 text-[11px] font-mono text-[#FCCA59]">
+              <MailCheck className="w-3.5 h-3.5" />
+              <span>Confirmation sent from info@vybeclub.co.in</span>
+            </div>
+          )}
         </div>
 
         <div className="mt-5 pt-4 border-t border-white/10 flex flex-col sm:flex-row items-center gap-3">
@@ -132,7 +166,7 @@ export default function WaitlistForm({
             ) : (
               <>
                 <Copy className="w-4 h-4" />
-                <span>SHARE PASS // BUMP QUEUE</span>
+                <span>SHARE WITH FRIENDS</span>
               </>
             )}
           </button>
@@ -142,7 +176,12 @@ export default function WaitlistForm({
   }
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-md mx-auto">
+    <form
+      onSubmit={handleSubmit}
+      noValidate
+      data-variant={variant}
+      className="w-full max-w-md mx-auto"
+    >
       <div className="relative flex flex-col sm:flex-row items-stretch gap-2.5 p-1.5 sm:p-2 rounded-2xl sm:rounded-full bg-white/[0.05] border border-white/15 backdrop-blur-xl focus-within:border-[#FCCA59]/80 focus-within:shadow-[0_0_25px_rgba(252,202,89,0.25)] transition-all duration-300">
         <input
           type="email"
@@ -154,6 +193,10 @@ export default function WaitlistForm({
           }}
           placeholder={placeholder}
           aria-label="Email address"
+          autoComplete="email"
+          required
+          aria-invalid={Boolean(error)}
+          aria-describedby={error ? errorId : undefined}
           className="flex-1 bg-transparent px-4 sm:px-6 py-3.5 sm:py-3 text-sm text-white placeholder-white/40 focus:outline-none font-sans disabled:opacity-50"
         />
 
@@ -165,7 +208,7 @@ export default function WaitlistForm({
           {loading ? (
             <>
               <Loader2 className="w-4 h-4 animate-spin text-black" />
-              <span>LOCKING IN...</span>
+              <span>SAVING...</span>
             </>
           ) : (
             <>
@@ -176,16 +219,69 @@ export default function WaitlistForm({
         </button>
       </div>
 
+      {/* Optional phone number */}
+      <div className="mt-2.5 px-1.5 sm:px-2">
+        <input
+          type="tel"
+          value={phone}
+          disabled={loading}
+          onChange={(e) => {
+            setPhone(e.target.value);
+            if (error) setError("");
+          }}
+          placeholder="Phone number (optional)"
+          aria-label="Phone number (optional)"
+          autoComplete="tel"
+          inputMode="tel"
+          className="w-full rounded-full bg-white/[0.03] border border-white/10 px-5 py-2.5 text-sm text-white placeholder-white/35 focus:outline-none focus:border-[#FCCA59]/60 font-sans disabled:opacity-50"
+        />
+      </div>
+
+      {/* Consent */}
+      <div className="mt-3 flex items-start gap-2.5 px-2 text-left">
+        <input
+          id={consentId}
+          type="checkbox"
+          checked={consent}
+          disabled={loading}
+          onChange={(e) => {
+            setConsent(e.target.checked);
+            if (error) setError("");
+          }}
+          className="mt-0.5 h-4 w-4 shrink-0 cursor-pointer accent-[#FCCA59]"
+        />
+        <label
+          htmlFor={consentId}
+          className="text-[11px] leading-relaxed text-white/60 font-sans cursor-pointer"
+        >
+          I agree to VYBE CLUB storing my email (and phone, if provided) to
+          contact me about launch updates and early access. I have read the{" "}
+          <Link
+            href="/privacy"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-[#FCCA59] underline underline-offset-2 hover:text-[#FED77A]"
+          >
+            Privacy Policy
+          </Link>
+          .
+        </label>
+      </div>
+
       {error && (
-        <p className="text-rose-400 text-xs font-mono mt-2 ml-4 text-left animate-in fade-in">
+        <p
+          id={errorId}
+          role="alert"
+          className="text-rose-400 text-xs font-mono mt-2 ml-2 text-left animate-in fade-in"
+        >
           {error}
         </p>
       )}
 
-      {/* Exclusivity micro-copy */}
+      {/* Micro-copy */}
       <div className="mt-3.5 flex items-center justify-center gap-2 text-[11px] font-mono text-white/40">
         <Sparkles className="w-3 h-3 text-[#FCCA59]" />
-        <span>LIMITED FOUNDING COHORT • STRICTLY CONFIDENTIAL</span>
+        <span>EARLY ACCESS WAITLIST • COMING 2027</span>
       </div>
     </form>
   );

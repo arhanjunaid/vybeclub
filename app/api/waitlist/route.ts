@@ -1,16 +1,75 @@
 import { NextResponse } from "next/server";
 import nodemailer from "nodemailer";
+import { insertWaitlistEntry } from "@/lib/db";
+
+const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+// Accept international formats: optional leading +, digits, spaces, dashes, parens.
+const PHONE_RE = /^\+?[0-9][0-9\s().-]{6,19}$/;
 
 export async function POST(request: Request) {
   try {
-    const { email, passNumber } = await request.json();
+    const body = await request.json();
+    const email: string = typeof body.email === "string" ? body.email.trim() : "";
+    const rawPhone: string =
+      typeof body.phone === "string" ? body.phone.trim() : "";
+    const consent: boolean = body.consent === true;
+    const passNumber: string | undefined =
+      typeof body.passNumber === "string" ? body.passNumber : undefined;
 
-    if (!email || !email.includes("@")) {
+    if (!email || !EMAIL_RE.test(email)) {
       return NextResponse.json(
         { error: "Invalid email address" },
         { status: 400 }
       );
     }
+
+    if (rawPhone && !PHONE_RE.test(rawPhone)) {
+      return NextResponse.json(
+        { error: "Invalid phone number" },
+        { status: 400 }
+      );
+    }
+
+    if (!consent) {
+      return NextResponse.json(
+        { error: "Consent is required to join the waitlist" },
+        { status: 400 }
+      );
+    }
+
+    const formattedPass =
+      passNumber || `#0${Math.floor(10000 + Math.random() * 90000)}`;
+
+    // 1. Persist to Postgres with duplicate protection.
+    let stored;
+    try {
+      stored = await insertWaitlistEntry({
+        email,
+        phone: rawPhone || null,
+        passNumber: formattedPass,
+        consent,
+        source: "web_waitlist_form",
+      });
+    } catch (dbError) {
+      console.error("Waitlist DB error:", dbError);
+      return NextResponse.json(
+        { error: "Could not save your spot. Please try again." },
+        { status: 503 }
+      );
+    }
+
+    // Already on the list — return their original pass, skip re-sending emails.
+    if (stored.status === "duplicate") {
+      return NextResponse.json({
+        success: true,
+        duplicate: true,
+        passNumber: stored.passNumber,
+        emailSent: false,
+      });
+    }
+
+    // Use whatever pass number the DB settled on for the emails below.
+    const resolvedPass = stored.passNumber;
 
     const host = process.env.SMTP_HOST || "smtp.hostinger.com";
     const port = Number(process.env.SMTP_PORT) || 465;
@@ -28,14 +87,12 @@ export async function POST(request: Request) {
       },
     });
 
-    const formattedPass = passNumber || `#0${Math.floor(10000 + Math.random() * 90000)}`;
-
     // 1. VIP Member Welcome Email (Branded Dark-Mode Gen-Z HTML with #FCCA59)
     const memberMailOptions = {
       from: `"VYBE CLUB" <${user}>`,
       to: email,
-      subject: `YOU'RE IN. 👀 // VIP PASS ${formattedPass}`,
-      text: `YOU'RE IN. 👀\n\nWelcome to VYBE CLUB.\nPass Identifier: ${formattedPass}\nStatus: PRE-RELEASE ALPHA // COHORT 01\n\nSomething different is coming. We are building a new way for the next generation to experience money, friends, goals and everyday life.\n\nKeep this confirmation secure. Drop announcements will arrive unannounced.\n\n— VYBE CLUB\nhttps://vybeclub.co.in`,
+      subject: `YOU'RE IN. 👀 // VIP PASS ${resolvedPass}`,
+      text: `YOU'RE IN. 👀\n\nWelcome to VYBE CLUB.\nPass Identifier: ${resolvedPass}\nStatus: PRE-RELEASE ALPHA // COHORT 01\n\nSomething different is coming. We are building a new way for the next generation to experience money, friends, goals and everyday life.\n\nKeep this confirmation secure. Drop announcements will arrive unannounced.\n\n— VYBE CLUB\nhttps://vybeclub.co.in`,
       html: `
         <!DOCTYPE html>
         <html>
@@ -94,7 +151,7 @@ export async function POST(request: Request) {
                         </tr>
                         <tr>
                           <td style="font-family: monospace; font-size: 22px; font-weight: bold; color: #FCCA59; padding-top: 4px;">
-                            ${formattedPass}
+                            ${resolvedPass}
                           </td>
                           <td align="right" style="font-family: monospace; font-size: 11px; font-weight: bold; color: #ffffff; padding-top: 4px;">
                             STAGE 01 ALPHA
@@ -143,8 +200,8 @@ export async function POST(request: Request) {
     const adminMailOptions = {
       from: `"VYBE CLUB System" <${user}>`,
       to: adminEmail,
-      subject: `⚡ New Waitlist Member: ${formattedPass} (${email})`,
-      text: `New member joined the waitlist!\n\nEmail: ${email}\nPass Number: ${formattedPass}\nTimestamp: ${new Date().toISOString()}\nIP/Origin: Web Waitlist Form`,
+      subject: `⚡ New Waitlist Member: ${resolvedPass} (${email})`,
+      text: `New member joined the waitlist!\n\nEmail: ${email}\nPhone: ${rawPhone || "—"}\nPass Number: ${resolvedPass}\nConsent: ${consent ? "Yes" : "No"}\nTimestamp: ${new Date().toISOString()}\nIP/Origin: Web Waitlist Form`,
     };
 
     // Send both emails in parallel
@@ -162,7 +219,8 @@ export async function POST(request: Request) {
 
     return NextResponse.json({
       success: true,
-      passNumber: formattedPass,
+      duplicate: false,
+      passNumber: resolvedPass,
       emailSent: memberResult.status === "fulfilled",
     });
   } catch (error: unknown) {

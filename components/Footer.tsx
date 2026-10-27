@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import { X } from "lucide-react";
 
 export default function Footer() {
@@ -9,13 +10,8 @@ export default function Footer() {
     body: string;
   } | null>(null);
 
-  const openModal = (type: "privacy" | "terms" | "contact") => {
-    if (type === "privacy") {
-      setModalContent({
-        title: "PRIVACY PROTOCOL",
-        body: "VYBE CLUB operates under zero-surveillance design principles. Your waitlist email is exclusively used to deliver access codes and will never be sold, rented, or distributed to advertising networks.",
-      });
-    } else if (type === "terms") {
+  const openModal = (type: "terms" | "contact") => {
+    if (type === "terms") {
       setModalContent({
         title: "CLUB ACCESS TERMS",
         body: "VYBE CLUB founding cohort access is allocated strictly on invitation and waitlist chronological hierarchy. Membership tokens are non-transferable pre-launch. VYBE CLUB is not a licensed depository institution or chartered bank.",
@@ -47,12 +43,12 @@ export default function Footer() {
 
         {/* Links */}
         <div className="flex flex-wrap items-center gap-6 sm:gap-8 text-xs font-mono uppercase tracking-wider text-white/60">
-          <button
-            onClick={() => openModal("privacy")}
+          <Link
+            href="/privacy"
             className="hover:text-[#FCCA59] transition-colors cursor-pointer"
           >
             Privacy
-          </button>
+          </Link>
           <button
             onClick={() => openModal("terms")}
             className="hover:text-[#FCCA59] transition-colors cursor-pointer"
