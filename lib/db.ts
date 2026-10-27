@@ -57,6 +57,39 @@ export function ensureSchema(): Promise<void> {
           source       TEXT,
           created_at   TIMESTAMPTZ NOT NULL DEFAULT now()
         );
+
+        -- Business documents, images and links managed from /admin/assets.
+        CREATE TABLE IF NOT EXISTS admin_assets (
+          id          BIGSERIAL PRIMARY KEY,
+          kind        TEXT NOT NULL CHECK (kind IN ('document','image','link')),
+          title       TEXT NOT NULL,
+          description TEXT,
+          category    TEXT,
+          url         TEXT,
+          filename    TEXT,
+          mime        TEXT,
+          size_bytes  INTEGER,
+          data        BYTEA,
+          created_at  TIMESTAMPTZ NOT NULL DEFAULT now()
+        );
+        CREATE INDEX IF NOT EXISTS admin_assets_kind_created_idx
+          ON admin_assets (kind, created_at DESC);
+
+        -- Failed admin login attempts, used for rate limiting.
+        CREATE TABLE IF NOT EXISTS admin_login_attempts (
+          id           BIGSERIAL PRIMARY KEY,
+          ip           TEXT NOT NULL,
+          attempted_at TIMESTAMPTZ NOT NULL DEFAULT now()
+        );
+        CREATE INDEX IF NOT EXISTS admin_login_attempts_ip_idx
+          ON admin_login_attempts (ip, attempted_at DESC);
+
+        -- Supabase exposes the public schema through its REST API. Enabling RLS
+        -- with no policies blocks that route; this app connects as the table
+        -- owner over a direct Postgres connection, which is unaffected.
+        ALTER TABLE waitlist ENABLE ROW LEVEL SECURITY;
+        ALTER TABLE admin_assets ENABLE ROW LEVEL SECURITY;
+        ALTER TABLE admin_login_attempts ENABLE ROW LEVEL SECURITY;
         `
       )
       .then(() => undefined)

@@ -51,9 +51,16 @@ export async function POST(request: Request) {
         source: "web_waitlist_form",
       });
     } catch (dbError) {
-      console.error("Waitlist DB error:", dbError);
+      const err = dbError as { code?: string; message?: string };
+      console.error("Waitlist DB error:", err.code, err.message);
       return NextResponse.json(
-        { error: "Could not save your spot. Please try again." },
+        {
+          error: "Could not save your spot. Please try again.",
+          // Only exposed outside production, to make local debugging easier.
+          ...(process.env.NODE_ENV !== "production" && {
+            detail: `${err.code ?? "ERR"}: ${err.message ?? "unknown"}`,
+          }),
+        },
         { status: 503 }
       );
     }

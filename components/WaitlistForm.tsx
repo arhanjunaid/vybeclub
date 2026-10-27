@@ -182,7 +182,8 @@ export default function WaitlistForm({
       data-variant={variant}
       className="w-full max-w-md mx-auto"
     >
-      <div className="relative flex flex-col sm:flex-row items-stretch gap-2.5 p-1.5 sm:p-2 rounded-2xl sm:rounded-full bg-white/[0.05] border border-white/15 backdrop-blur-xl focus-within:border-[#FCCA59]/80 focus-within:shadow-[0_0_25px_rgba(252,202,89,0.25)] transition-all duration-300">
+      {/* Fields stacked: email, then phone */}
+      <div className="flex flex-col gap-2.5">
         <input
           type="email"
           value={email}
@@ -197,30 +198,9 @@ export default function WaitlistForm({
           required
           aria-invalid={Boolean(error)}
           aria-describedby={error ? errorId : undefined}
-          className="flex-1 bg-transparent px-4 sm:px-6 py-3.5 sm:py-3 text-sm text-white placeholder-white/40 focus:outline-none font-sans disabled:opacity-50"
+          className="w-full rounded-full bg-white/[0.05] border border-white/15 backdrop-blur-xl px-5 sm:px-6 py-3.5 text-sm text-white placeholder-white/40 focus:outline-none focus:border-[#FCCA59]/80 focus:shadow-[0_0_25px_rgba(252,202,89,0.25)] transition-all duration-300 font-sans disabled:opacity-50"
         />
 
-        <button
-          type="submit"
-          disabled={loading}
-          className="group relative inline-flex items-center justify-center gap-2 px-7 py-3.5 sm:py-3 rounded-xl sm:rounded-full bg-[#FCCA59] text-black font-extrabold text-xs sm:text-sm tracking-wider uppercase shadow-[0_0_20px_rgba(252,202,89,0.35)] hover:shadow-[0_0_30px_rgba(252,202,89,0.6)] hover:bg-[#FED77A] active:scale-95 transition-all duration-200 cursor-pointer whitespace-nowrap disabled:opacity-80"
-        >
-          {loading ? (
-            <>
-              <Loader2 className="w-4 h-4 animate-spin text-black" />
-              <span>SAVING...</span>
-            </>
-          ) : (
-            <>
-              <span>{ctaText}</span>
-              <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform text-black" />
-            </>
-          )}
-        </button>
-      </div>
-
-      {/* Optional phone number */}
-      <div className="mt-2.5 px-1.5 sm:px-2">
         <input
           type="tel"
           value={phone}
@@ -229,16 +209,16 @@ export default function WaitlistForm({
             setPhone(e.target.value);
             if (error) setError("");
           }}
-          placeholder="Phone number (optional)"
-          aria-label="Phone number (optional)"
+          placeholder="Mobile number (optional)"
+          aria-label="Mobile number (optional)"
           autoComplete="tel"
           inputMode="tel"
-          className="w-full rounded-full bg-white/[0.03] border border-white/10 px-5 py-2.5 text-sm text-white placeholder-white/35 focus:outline-none focus:border-[#FCCA59]/60 font-sans disabled:opacity-50"
+          className="w-full rounded-full bg-white/[0.05] border border-white/15 backdrop-blur-xl px-5 sm:px-6 py-3.5 text-sm text-white placeholder-white/40 focus:outline-none focus:border-[#FCCA59]/80 focus:shadow-[0_0_25px_rgba(252,202,89,0.25)] transition-all duration-300 font-sans disabled:opacity-50"
         />
       </div>
 
       {/* Consent */}
-      <div className="mt-3 flex items-start gap-2.5 px-2 text-left">
+      <div className="mt-3.5 flex items-start gap-2.5 px-2 text-left">
         <input
           id={consentId}
           type="checkbox"
@@ -277,6 +257,25 @@ export default function WaitlistForm({
           {error}
         </p>
       )}
+
+      {/* Submit button sits below the fields */}
+      <button
+        type="submit"
+        disabled={loading}
+        className="group mt-4 w-full inline-flex items-center justify-center gap-2 px-7 py-3.5 rounded-full bg-[#FCCA59] text-black font-extrabold text-sm tracking-wider uppercase shadow-[0_0_20px_rgba(252,202,89,0.35)] hover:shadow-[0_0_30px_rgba(252,202,89,0.6)] hover:bg-[#FED77A] active:scale-95 transition-all duration-200 cursor-pointer whitespace-nowrap disabled:opacity-80"
+      >
+        {loading ? (
+          <>
+            <Loader2 className="w-4 h-4 animate-spin text-black" />
+            <span>SAVING...</span>
+          </>
+        ) : (
+          <>
+            <span>{ctaText}</span>
+            <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform text-black" />
+          </>
+        )}
+      </button>
 
       {/* Micro-copy */}
       <div className="mt-3.5 flex items-center justify-center gap-2 text-[11px] font-mono text-white/40">
